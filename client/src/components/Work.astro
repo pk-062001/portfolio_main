@@ -1,0 +1,221 @@
+---
+import Icon from './Icon.astro';
+import ProjectCover from './ProjectCover.astro';
+import Split from './Split.astro';
+import { getProjects } from '@/lib/projects';
+import { site } from '@/data/site';
+
+const projects = (await getProjects()).filter((p) => p.data.featured);
+---
+
+<section class="section" id="work" aria-labelledby="work-title">
+  <div class="container">
+    <div class="section-head head-row">
+      <div>
+        <span class="eyebrow" data-reveal>Selected work</span>
+        <Split as="h2" class="section-title" id="work-title">
+          Products I've <em class="serif">architected</em> &amp; built.
+        </Split>
+      </div>
+      <a class="btn" href={site.github} target="_blank" rel="noopener noreferrer" data-reveal>
+        <Icon name="github" /> More on GitHub
+      </a>
+    </div>
+
+    <ul class="projects">
+      {
+        projects.map((project, i) => (
+          <li class="project card spotlight" data-reveal style={`--pa:${project.data.accent}`}>
+            <a class="cover-link" href={`/work/${project.id}`} aria-label={`Read the ${project.data.title} case study`}>
+              <ProjectCover project={project} />
+            </a>
+
+            <div class="info">
+              <div class="topline mono">
+                <span>{String(i + 1).padStart(2, '0')}</span>
+                <span>{project.data.year}</span>
+                <span class="status">{project.data.status}</span>
+              </div>
+
+              <h3>
+                <a href={`/work/${project.id}`}>{project.data.title}</a>
+              </h3>
+              <p class="tagline">{project.data.tagline}</p>
+
+              <ul class="highlights">
+                {project.data.highlights.map((h) => (
+                  <li>{h}</li>
+                ))}
+              </ul>
+
+              <div class="chips">
+                {project.data.stack.slice(0, 6).map((tech) => (
+                  <span class="chip">{tech}</span>
+                ))}
+              </div>
+
+              <div class="links">
+                <a class="btn btn-primary" href={`/work/${project.id}`}>
+                  Case study <Icon name="arrow-up-right" class="arrow" />
+                </a>
+                {project.data.live && (
+                  <a class="btn" href={project.data.live} target="_blank" rel="noopener noreferrer">
+                    Live <Icon name="arrow-up-right" class="arrow" />
+                  </a>
+                )}
+                {project.data.repo && (
+                  <a class="btn" href={project.data.repo} target="_blank" rel="noopener noreferrer">
+                    <Icon name="github" /> Code
+                  </a>
+                )}
+              </div>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .head-row {
+    max-width: none;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+  }
+
+  .head-row > div {
+    display: grid;
+    gap: 1.25rem;
+    max-width: 46rem;
+  }
+
+  .projects {
+    display: grid;
+    gap: clamp(1.25rem, 3vw, 2rem);
+    list-style: none;
+    padding: 0;
+  }
+
+  .project {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    border-radius: var(--radius-lg);
+    transition: border-color 0.4s;
+  }
+
+  .project:hover {
+    border-color: color-mix(in srgb, var(--pa) 40%, var(--border));
+  }
+
+  .project:nth-child(even) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+  }
+
+  .project:nth-child(even) .cover-link {
+    order: 2;
+  }
+
+  .cover-link {
+    display: block;
+    min-width: 0;
+  }
+
+  .cover-link :global(.cover) {
+    width: 100%;
+    height: 100%;
+    min-height: 24rem;
+    aspect-ratio: auto;
+  }
+
+  .info {
+    display: grid;
+    align-content: center;
+    gap: 1.1rem;
+    padding: clamp(1.5rem, 3.5vw, 2.75rem);
+  }
+
+  .topline {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.72rem;
+    color: var(--text-dim);
+  }
+
+  .status {
+    margin-left: auto;
+    color: var(--pa);
+  }
+
+  h3 {
+    font-size: clamp(1.9rem, 3.6vw, 2.75rem);
+  }
+
+  h3 a {
+    background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+    transition: background-size 0.5s var(--ease-out);
+  }
+
+  h3 a:hover {
+    background-size: 100% 1px;
+  }
+
+  .tagline {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+  }
+
+  .highlights {
+    display: grid;
+    gap: 0.45rem;
+    padding: 0;
+    list-style: none;
+    font-size: 0.92rem;
+    color: var(--text-muted);
+  }
+
+  .highlights li {
+    position: relative;
+    padding-left: 1.2rem;
+  }
+
+  .highlights li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 6px;
+    height: 6px;
+    border-radius: 2px;
+    background: var(--pa);
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 0.4rem;
+  }
+
+  @media (max-width: 900px) {
+    .head-row {
+      grid-template-columns: 1fr;
+      justify-items: start;
+    }
+
+    .project,
+    .project:nth-child(even) {
+      grid-template-columns: 1fr;
+    }
+
+    .project:nth-child(even) .cover-link {
+      order: 0;
+    }
+
+    .cover-link :global(.cover) {
+      height: auto;
+      min-height: 0;
+      aspect-ratio: 16 / 10;
+    }
+  }
+</style>

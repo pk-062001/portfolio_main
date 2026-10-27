@@ -1,0 +1,360 @@
+---
+import Icon from './Icon.astro';
+import Split from './Split.astro';
+import { site, socials } from '@/data/site';
+---
+
+<section class="section contact" id="contact" aria-labelledby="contact-title">
+  <div class="contact-glow" aria-hidden="true"></div>
+  <div class="container grid">
+    <div class="left">
+      <span class="eyebrow" data-reveal>Contact</span>
+      <Split as="h2" class="title" id="contact-title">
+        Have a product that needs to <em class="serif">hold up?</em>
+      </Split>
+      <p class="lead" data-reveal>
+        I'm open to senior full-stack roles and selective freelance work. Tell me what you're building — I usually reply
+        within a day.
+      </p>
+
+      <div class="email-row" data-reveal>
+        <a class="email" href={`mailto:${site.email}`}>{site.email}</a>
+        <button class="icon-btn" type="button" data-copy={site.email} aria-label="Copy email address">
+          <Icon name="copy" size={16} class="i-copy" />
+          <Icon name="check" size={16} class="i-check" />
+        </button>
+      </div>
+
+      <ul class="socials" data-reveal>
+        {
+          socials.map((s) => (
+            <li>
+              <a
+                href={s.href}
+                target={s.href.startsWith('http') ? '_blank' : undefined}
+                rel={s.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+              >
+                <Icon name={s.icon} size={16} />
+                <span>{s.label === 'Phone' ? site.phone : s.label}</span>
+                <Icon name="arrow-up-right" size={14} class="arrow" />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <form class="form card" data-contact-form novalidate data-reveal style="--d:120">
+      <div class="row">
+        <label class="field">
+          <span>Name</span>
+          <input name="from_name" autocomplete="name" required minlength="2" placeholder="Your name" />
+          <small data-error-for="from_name"></small>
+        </label>
+        <label class="field">
+          <span>Email</span>
+          <input name="from_email" type="email" autocomplete="email" required placeholder="you@company.com" />
+          <small data-error-for="from_email"></small>
+        </label>
+      </div>
+      <label class="field">
+        <span>Subject</span>
+        <input name="subject" required minlength="3" placeholder="Senior role, freelance project, collaboration…" />
+        <small data-error-for="subject"></small>
+      </label>
+      <label class="field">
+        <span>Message</span>
+        <textarea name="message" rows="5" required minlength="10" placeholder="A few lines about what you're building"></textarea>
+        <small data-error-for="message"></small>
+      </label>
+      <input type="text" name="_honey" class="honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+      <button class="btn btn-primary submit" type="submit" data-magnetic="0.15">
+        <span data-label>Send message</span>
+        <Icon name="send" />
+      </button>
+      <p class="status" data-status role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+
+<style>
+  .contact {
+    overflow: hidden;
+  }
+
+  .contact-glow {
+    position: absolute;
+    left: 50%;
+    bottom: -30%;
+    width: 80vmax;
+    height: 50vmax;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: radial-gradient(closest-side, var(--glow), transparent);
+    pointer-events: none;
+  }
+
+  .grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: start;
+  }
+
+  .left {
+    display: grid;
+    gap: 1.5rem;
+    justify-items: start;
+  }
+
+  .title {
+    font-size: clamp(2.5rem, 6vw, 4.75rem);
+    letter-spacing: -0.05em;
+  }
+
+  .lead {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    max-width: 30rem;
+  }
+
+  .email-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .email {
+    font-size: clamp(1.15rem, 2.4vw, 1.6rem);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    background: linear-gradient(var(--accent), var(--accent)) 0 100% / 100% 1px no-repeat;
+    padding-bottom: 0.2rem;
+    word-break: break-all;
+  }
+
+  .icon-btn {
+    display: inline-grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    transition:
+      color 0.3s,
+      border-color 0.3s;
+  }
+
+  .icon-btn:hover {
+    color: var(--text);
+    border-color: var(--border-strong);
+  }
+
+  .icon-btn :global(.i-check),
+  .copied :global(.i-copy) {
+    display: none;
+  }
+
+  .copied :global(.i-check) {
+    display: block;
+    color: #3fd0a4;
+  }
+
+  .socials {
+    display: grid;
+    width: 100%;
+    max-width: 26rem;
+    list-style: none;
+    padding: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .socials a {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.95rem 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
+    transition:
+      color 0.3s,
+      padding 0.4s var(--ease-out);
+  }
+
+  .socials a:hover {
+    color: var(--text);
+    padding-left: 0.5rem;
+  }
+
+  .socials :global(.arrow) {
+    margin-left: auto;
+  }
+
+  .form {
+    display: grid;
+    gap: 1.1rem;
+    padding: clamp(1.4rem, 3vw, 2.25rem);
+    border-radius: var(--radius-lg);
+    background: var(--bg-elev);
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.1rem;
+  }
+
+  .field {
+    display: grid;
+    gap: 0.45rem;
+  }
+
+  .field span {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    font-size: 1rem;
+    transition:
+      border-color 0.3s,
+      background 0.3s;
+    resize: vertical;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--text-dim);
+  }
+
+  input:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: var(--surface-strong);
+  }
+
+  .field.invalid input,
+  .field.invalid textarea {
+    border-color: #ef4444;
+  }
+
+  small {
+    min-height: 1em;
+    color: #ef4444;
+    font-size: 0.78rem;
+  }
+
+  .honey {
+    position: absolute;
+    left: -9999px;
+  }
+
+  .submit {
+    justify-self: start;
+    min-width: 11rem;
+  }
+
+  .submit[disabled] {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .status {
+    min-height: 1.4em;
+    font-size: 0.9rem;
+  }
+
+  .status.ok {
+    color: #3fd0a4;
+  }
+
+  .status.err {
+    color: #ef4444;
+  }
+
+  @media (max-width: 900px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .row {
+      grid-template-columns: 1fr;
+    }
+
+    .submit {
+      justify-self: stretch;
+    }
+  }
+</style>
+
+<script>
+  import { sendContact, validateContact, type ContactPayload } from '@/scripts/contact';
+
+  document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((btn) =>
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(btn.dataset.copy!);
+        btn.classList.add('copied');
+        setTimeout(() => btn.classList.remove('copied'), 1800);
+      } catch {
+        location.href = `mailto:${btn.dataset.copy}`;
+      }
+    }),
+  );
+
+  const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+  if (form) {
+    const status = form.querySelector<HTMLElement>('[data-status]')!;
+    const submit = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    const label = submit.querySelector<HTMLElement>('[data-label]')!;
+
+    const showErrors = (errors: Partial<Record<keyof ContactPayload, string>>) => {
+      form.querySelectorAll<HTMLElement>('[data-error-for]').forEach((el) => {
+        const key = el.dataset.errorFor as keyof ContactPayload;
+        el.textContent = errors[key] ?? '';
+        el.closest('.field')?.classList.toggle('invalid', !!errors[key]);
+      });
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form)) as unknown as ContactPayload & { _honey?: string };
+      if (data._honey) return;
+
+      const errors = validateContact(data);
+      showErrors(errors);
+      if (Object.keys(errors).length) {
+        form.querySelector<HTMLElement>('.invalid input, .invalid textarea')?.focus();
+        return;
+      }
+
+      submit.disabled = true;
+      label.textContent = 'Sending…';
+      status.className = 'status';
+      status.textContent = '';
+
+      const result = await sendContact(data);
+      submit.disabled = false;
+      label.textContent = 'Send message';
+      status.className = `status ${result.ok ? 'ok' : 'err'}`;
+      status.textContent = result.message;
+      if (result.ok) form.reset();
+    });
+  }
+</script>

@@ -1,0 +1,20 @@
+---
+import type { HTMLAttributes, HTMLTag } from 'astro/types';
+
+type Props = HTMLAttributes<'span'> & { as?: HTMLTag };
+
+const { as: Tag = 'span', ...attrs } = Astro.props;
+const html = await Astro.slots.render('default');
+
+let index = 0;
+const split = html
+  .split(/(<[^>]+>)/)
+  .map((part) =>
+    part.startsWith('<')
+      ? part
+      : part.replace(/\S+/g, (word) => `<span class="split-word"><span style="--i:${index++}">${word}</span></span>`),
+  )
+  .join('');
+---
+
+<Tag data-split {...attrs} set:html={split} />

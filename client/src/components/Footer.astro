@@ -1,0 +1,174 @@
+---
+import Icon from './Icon.astro';
+import { nav, site, socials } from '@/data/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container">
+    <div class="top">
+      <a href="/#top" class="big" title="Back to top">
+        <span>{site.shortName}</span>
+        <em class="serif">Kokkula</em>
+      </a>
+      <a href="/#top" class="to-top" aria-label="Back to top" data-magnetic>
+        <Icon name="arrow-up" size={20} />
+      </a>
+    </div>
+
+    <div class="cols">
+      <nav aria-label="Footer">
+        <p class="label mono">Sitemap</p>
+        <ul>
+          {
+            nav.map((item) => (
+              <li>
+                <a href={item.href}>{item.label}</a>
+              </li>
+            ))
+          }
+          <li><a href={site.resume} download>Résumé (PDF)</a></li>
+        </ul>
+      </nav>
+      <div>
+        <p class="label mono">Elsewhere</p>
+        <ul>
+          {
+            socials.map((s) => (
+              <li>
+                <a href={s.href} target={s.href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer">
+                  {s.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div>
+        <p class="label mono">Status</p>
+        <p class="avail"><span class="pulse-dot"></span> {site.availability}</p>
+      </div>
+    </div>
+
+    <div class="bottom mono">
+      <span>© {year} {site.name}</span>
+      <span>Built with Astro & hand-written WebGL · Press <kbd>Ctrl</kbd> <kbd>K</kbd></span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    position: relative;
+    padding-top: clamp(4rem, 9vw, 7rem);
+    padding-bottom: max(2rem, env(safe-area-inset-bottom));
+    border-top: 1px solid var(--border);
+  }
+
+  .top {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .big {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 0.25em;
+    font-size: clamp(3.5rem, 13vw, 11rem);
+    font-weight: 600;
+    line-height: 0.9;
+    letter-spacing: -0.06em;
+  }
+
+  .big em {
+    color: var(--accent);
+  }
+
+  .to-top {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 3.75rem;
+    height: 3.75rem;
+    border-radius: 50%;
+    border: 1px solid var(--border-strong);
+    transition:
+      background 0.3s,
+      color 0.3s;
+  }
+
+  .to-top:hover {
+    background: var(--accent);
+    color: var(--accent-ink);
+    border-color: transparent;
+  }
+
+  .cols {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2rem;
+    margin-top: clamp(3rem, 7vw, 5rem);
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .label {
+    margin-bottom: 1rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  ul {
+    display: grid;
+    gap: 0.55rem;
+    list-style: none;
+    padding: 0;
+  }
+
+  ul a {
+    color: var(--text-muted);
+    transition: color 0.3s;
+  }
+
+  ul a:hover {
+    color: var(--text);
+  }
+
+  .avail {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--text-muted);
+  }
+
+  .bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-top: 3.5rem;
+    font-size: 0.72rem;
+    color: var(--text-dim);
+  }
+
+  kbd {
+    padding: 0.1rem 0.4rem;
+    border-radius: 5px;
+    border: 1px solid var(--border-strong);
+    font-family: inherit;
+  }
+
+  @media (max-width: 700px) {
+    .cols {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .cols > :last-child {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

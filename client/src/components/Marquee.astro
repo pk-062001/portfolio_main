@@ -1,0 +1,64 @@
+---
+import { marquee } from '@/data/skills';
+const items = [...marquee, ...marquee];
+---
+
+<div class="marquee" aria-label="Technologies I work with">
+  <ul class="sr-only">
+    {marquee.map((item) => <li>{item}</li>)}
+  </ul>
+  <div class="track" aria-hidden="true">
+    {
+      items.map((item) => (
+        <span class="item">
+          {item}
+          <span class="sep">✦</span>
+        </span>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .marquee {
+    position: relative;
+    overflow: hidden;
+    border-block: 1px solid var(--border);
+    padding-block: 1.35rem;
+    mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  }
+
+  .track {
+    display: flex;
+    width: max-content;
+    animation: scroll 45s linear infinite;
+  }
+
+  .marquee:hover .track {
+    animation-play-state: paused;
+  }
+
+  .item {
+    display: inline-flex;
+    align-items: center;
+    gap: 2.25rem;
+    padding-right: 2.25rem;
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .sep {
+    color: var(--accent);
+    font-size: 0.7em;
+  }
+
+  @keyframes scroll {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+</style>

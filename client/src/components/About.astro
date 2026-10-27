@@ -1,0 +1,313 @@
+---
+import Split from './Split.astro';
+import { facts, principles, story } from '@/data/site';
+
+const owned = [
+  { k: '01', title: 'Marketplace & listings', detail: 'Buyers, sellers and admins' },
+  { k: '02', title: 'Five payment gateways', detail: 'Razorpay, Pine Labs, HDFC, Yes Bank, Juspay' },
+  { k: '03', title: 'Access, admin & alerts', detail: 'RBAC, live dashboard, notifications' },
+  { k: '04', title: 'Cloud & on-call', detail: 'AWS and DigitalOcean' },
+];
+---
+
+<section class="section" id="about" aria-labelledby="about-title">
+  <div class="container about">
+    <div class="system-col" data-reveal>
+      <div class="system-card" data-tilt>
+        <p class="system-top mono">
+          <span class="live"><span class="pulse-dot"></span> Live</span>
+          <span>BXI · Mumbai</span>
+        </p>
+        <p class="system-kicker mono">The platform I run</p>
+        <p class="system-line">
+          One marketplace.<br />
+          <em class="serif">Two engineers.</em><br />
+          Full ownership.
+        </p>
+        <ol class="nodes">
+          {
+            owned.map((item) => (
+              <li>
+                <span class="node-k mono">{item.k}</span>
+                <span>
+                  <strong>{item.title}</strong>
+                  <small>{item.detail}</small>
+                </span>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+
+    <div class="copy">
+      <div class="section-head">
+        <span class="eyebrow" data-reveal>About</span>
+        <Split as="h2" class="section-title" id="about-title">
+          Engineer by craft, <em class="serif">owner</em> by habit.
+        </Split>
+      </div>
+
+      <div class="story">
+        {
+          story.map((p, i) => (
+            <p data-reveal style={`--d:${i * 80}`}>
+              {p}
+            </p>
+          ))
+        }
+      </div>
+
+      <dl class="facts" data-reveal>
+        {
+          facts.map((fact) => (
+            <div>
+              <dt>{fact.label}</dt>
+              <dd>{fact.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </div>
+
+  <div class="container">
+    <h3 class="principles-title eyebrow" data-reveal>How I work</h3>
+    <ol class="principles">
+      {
+        principles.map((item, i) => (
+          <li class="card spotlight" data-reveal style={`--d:${i * 90}`}>
+            <span class="num mono">0{i + 1}</span>
+            <h4>{item.title}</h4>
+            <p>{item.body}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .about {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: clamp(2.5rem, 7vw, 6rem);
+    align-items: start;
+  }
+
+  .system-col {
+    perspective: 1200px;
+  }
+
+  .system-card {
+    position: relative;
+    display: grid;
+    gap: 1.35rem;
+    padding: clamp(1.4rem, 3vw, 2rem);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    background:
+      radial-gradient(90% 55% at 100% 0%, var(--glow), transparent 60%),
+      linear-gradient(var(--border) 1px, transparent 1px) 0 0 / 36px 36px,
+      linear-gradient(90deg, var(--border) 1px, transparent 1px) 0 0 / 36px 36px,
+      var(--bg-elev);
+    transform-style: preserve-3d;
+    transition: transform 0.6s var(--ease-out);
+    will-change: transform;
+  }
+
+  .system-top,
+  .live {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    color: var(--text-dim);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .live {
+    justify-content: flex-start;
+    gap: 0.45rem;
+    color: var(--text);
+  }
+
+  .system-kicker {
+    color: var(--accent);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .system-line {
+    font-size: clamp(1.85rem, 3vw, 2.35rem);
+    font-weight: 600;
+    letter-spacing: -0.045em;
+    line-height: 1.12;
+  }
+
+  .system-line em {
+    font-weight: 400;
+  }
+
+  .nodes {
+    display: grid;
+    gap: 0;
+    margin: 0.25rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .nodes li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.9rem;
+    align-items: start;
+    padding: 0.85rem 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .node-k {
+    color: var(--accent);
+    font-size: 0.72rem;
+    padding-top: 0.2rem;
+  }
+
+  .nodes strong {
+    display: block;
+    font-size: 0.98rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .nodes small {
+    display: block;
+    margin-top: 0.2rem;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    line-height: 1.45;
+  }
+
+  .copy .section-head {
+    margin-bottom: 2rem;
+  }
+
+  .story {
+    display: grid;
+    gap: 1.2rem;
+    color: var(--text-muted);
+    font-size: 1.0625rem;
+    line-height: 1.75;
+  }
+
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem 2rem;
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .facts dt {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  .facts dd {
+    margin: 0.3rem 0 0;
+    font-size: 0.95rem;
+  }
+
+  .principles-title {
+    margin-top: clamp(5rem, 10vw, 8rem);
+    margin-bottom: 1.75rem;
+  }
+
+  .principles {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+    list-style: none;
+    padding: 0;
+  }
+
+  .principles li {
+    display: grid;
+    align-content: start;
+    gap: 0.75rem;
+    padding: 1.6rem;
+    min-height: 15rem;
+  }
+
+  .num {
+    color: var(--accent);
+    font-size: 0.75rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .principles h4 {
+    font-size: 1.2rem;
+    letter-spacing: -0.025em;
+  }
+
+  .principles p {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 1000px) {
+    .principles {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 900px) {
+    .about {
+      grid-template-columns: 1fr;
+    }
+
+    .system-col {
+      max-width: 460px;
+      width: 100%;
+      margin-inline: auto;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .principles,
+    .facts {
+      grid-template-columns: 1fr;
+    }
+
+    .principles li {
+      min-height: 0;
+    }
+
+    .num {
+      margin-bottom: 0.75rem;
+    }
+  }
+</style>
+
+<script>
+  const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (fine && !reduced) {
+    document.querySelectorAll<HTMLElement>('[data-tilt]').forEach((card) => {
+      card.addEventListener('pointermove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        card.style.transform = `rotateY(${x * 10}deg) rotateX(${-y * 10}deg)`;
+      });
+      card.addEventListener('pointerleave', () => (card.style.transform = ''));
+    });
+  }
+</script>

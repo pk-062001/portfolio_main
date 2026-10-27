@@ -1,0 +1,53 @@
+---
+import Base from '@/layouts/Base.astro';
+import Hero from '@/components/Hero.astro';
+import Marquee from '@/components/Marquee.astro';
+import Stats from '@/components/Stats.astro';
+import About from '@/components/About.astro';
+import Experience from '@/components/Experience.astro';
+import Work from '@/components/Work.astro';
+import Stack from '@/components/Stack.astro';
+import Contact from '@/components/Contact.astro';
+import { site } from '@/data/site';
+import { education, experience } from '@/data/experience';
+import { skillGroups } from '@/data/skills';
+
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': `${site.url}/#person`,
+  name: site.name,
+  url: site.url,
+  image: `${site.url}/og-image.jpg`,
+  jobTitle: site.role,
+  description: site.description,
+  email: `mailto:${site.email}`,
+  telephone: site.phone.replace(/\s/g, ''),
+  address: { '@type': 'PostalAddress', addressLocality: 'Mumbai', addressRegion: 'Maharashtra', addressCountry: 'IN' },
+  worksFor: { '@type': 'Organization', name: experience[0].company },
+  alumniOf: { '@type': 'CollegeOrUniversity', name: education.school },
+  knowsAbout: skillGroups.flatMap((g) => g.items).slice(0, 30),
+  sameAs: [site.github, site.linkedin],
+};
+
+const website = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${site.url}/#website`,
+  url: site.url,
+  name: `${site.name} — Portfolio`,
+  author: { '@id': `${site.url}/#person` },
+  inLanguage: 'en-IN',
+};
+---
+
+<Base type="profile" jsonLd={[person, website]}>
+  <Hero />
+  <Marquee />
+  <Stats />
+  <About />
+  <Experience />
+  <Work />
+  <Stack />
+  <Contact />
+</Base>

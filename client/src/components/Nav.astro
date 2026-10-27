@@ -1,0 +1,361 @@
+---
+import Icon from './Icon.astro';
+import { nav, site } from '@/data/site';
+---
+
+<header class="nav" data-nav>
+  <div class="nav-inner container">
+    <a href="/" class="brand" title="Home">
+      <span class="brand-mark" aria-hidden="true">{site.initials}<i>.</i></span>
+      <span class="brand-name">{site.name}</span>
+    </a>
+
+    <nav class="links" aria-label="Primary">
+      <ul>
+        {
+          nav.map((item) => (
+            <li>
+              <a href={item.href} data-nav-link={item.href.split('#')[1]}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="actions">
+      <button class="icon-btn kbd-btn" type="button" data-palette-open aria-label="Open command menu">
+        <Icon name="command" size={15} />
+        <span class="mono">K</span>
+      </button>
+      <button class="icon-btn" type="button" data-theme-toggle aria-label="Toggle colour theme">
+        <Icon name="sun" size={17} class="i-sun" />
+        <Icon name="moon" size={17} class="i-moon" />
+      </button>
+      <a class="btn btn-primary resume-btn" href={site.resume} download data-magnetic>
+        Résumé <Icon name="download" />
+      </a>
+      <button class="icon-btn menu-btn" type="button" data-menu-toggle aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
+        <Icon name="menu" size={20} class="i-menu" />
+        <Icon name="close" size={20} class="i-close" />
+      </button>
+    </div>
+  </div>
+
+  <div class="sheet" id="mobile-menu" data-menu hidden>
+    <nav aria-label="Mobile">
+      <ol>
+        {
+          nav.map((item, i) => (
+            <li style={`--i:${i}`}>
+              <a href={item.href} data-menu-link>
+                <span class="mono">0{i + 1}</span>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+    <div class="sheet-foot">
+      <a class="btn btn-primary" href={site.resume} download>Download résumé <Icon name="download" /></a>
+      <a class="btn" href={`mailto:${site.email}`}><Icon name="mail" /> {site.email}</a>
+    </div>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 50;
+    padding-top: max(0.75rem, env(safe-area-inset-top));
+    transition: transform 0.6s var(--ease-out);
+  }
+
+  .nav.is-hidden:not(.menu-open) {
+    transform: translateY(-120%);
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    height: 3.75rem;
+    border-radius: 999px;
+    transition:
+      background 0.4s,
+      border-color 0.4s,
+      box-shadow 0.4s;
+    border: 1px solid transparent;
+    max-width: calc(var(--container) + 1.5rem);
+    padding-inline: 0.6rem 0.5rem;
+  }
+
+  .nav.is-scrolled .nav-inner,
+  .nav.menu-open .nav-inner {
+    background: var(--nav-bg);
+    border-color: var(--border);
+    backdrop-filter: blur(18px) saturate(1.4);
+    -webkit-backdrop-filter: blur(18px) saturate(1.4);
+    box-shadow: 0 10px 40px -20px rgba(0, 0, 0, 0.5);
+  }
+
+  @media (max-width: 1260px) {
+    .nav-inner {
+      width: calc(100% - 1.5rem);
+    }
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.35rem 0.6rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .brand-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.1rem;
+    height: 2.1rem;
+    border-radius: 10px;
+    background: var(--text);
+    color: var(--bg);
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: -0.06em;
+  }
+
+  .brand-mark i {
+    color: var(--accent);
+    font-style: normal;
+  }
+
+  .brand-name {
+    font-size: 0.95rem;
+  }
+
+  .links ul {
+    display: flex;
+    gap: 0.25rem;
+    list-style: none;
+    padding: 0;
+  }
+
+  .links a {
+    position: relative;
+    display: block;
+    padding: 0.5rem 0.9rem;
+    border-radius: 999px;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    transition: color 0.3s;
+  }
+
+  .links a:hover,
+  .links a.is-active {
+    color: var(--text);
+  }
+
+  .links a.is-active::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0.2rem;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--accent);
+    transform: translateX(-50%);
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .icon-btn {
+    display: inline-grid;
+    grid-auto-flow: column;
+    place-items: center;
+    gap: 0.3rem;
+    min-width: 2.6rem;
+    height: 2.6rem;
+    padding: 0 0.7rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    transition:
+      color 0.3s,
+      border-color 0.3s,
+      background 0.3s;
+  }
+
+  .icon-btn:hover {
+    color: var(--text);
+    border-color: var(--border-strong);
+    background: var(--surface-strong);
+  }
+
+  .kbd-btn span {
+    font-size: 0.8rem;
+  }
+
+  .resume-btn {
+    min-height: 2.6rem;
+    padding: 0 1.1rem;
+    font-size: 0.875rem;
+  }
+
+  :global([data-theme='dark'] .i-moon),
+  :global([data-theme='light'] .i-sun) {
+    display: none;
+  }
+
+  .icon-btn :global(.i-close),
+  .menu-open :global(.i-menu) {
+    display: none;
+  }
+
+  .menu-open :global(.i-close) {
+    display: block;
+  }
+
+  .menu-btn {
+    display: none;
+  }
+
+  .sheet {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 7rem var(--gutter) max(2rem, env(safe-area-inset-bottom));
+    background: var(--bg);
+    overflow-y: auto;
+  }
+
+  .sheet[hidden] {
+    display: none;
+  }
+
+  .sheet ol {
+    list-style: none;
+    padding: 0;
+  }
+
+  .sheet li {
+    border-bottom: 1px solid var(--border);
+    opacity: 0;
+    transform: translateY(16px);
+    animation: sheet-in 0.7s var(--ease-out) forwards;
+    animation-delay: calc(var(--i) * 60ms + 80ms);
+  }
+
+  .sheet li a {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 1.1rem 0;
+    font-size: clamp(2rem, 9vw, 2.75rem);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+  }
+
+  .sheet li .mono {
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0;
+  }
+
+  .sheet-foot {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  @keyframes sheet-in {
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .links,
+    .kbd-btn,
+    .resume-btn {
+      display: none;
+    }
+
+    .brand-name {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+    }
+
+    .menu-btn {
+      display: inline-grid;
+    }
+  }
+</style>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-nav]')!;
+  const menu = document.querySelector<HTMLElement>('[data-menu]')!;
+  const menuToggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]')!;
+
+  let lastY = window.scrollY;
+  const onScroll = () => {
+    const y = window.scrollY;
+    header.classList.toggle('is-scrolled', y > 24);
+    header.classList.toggle('is-hidden', y > 320 && y > lastY + 4);
+    if (y < lastY - 4 || y < 320) header.classList.remove('is-hidden');
+    lastY = y;
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  const setMenu = (open: boolean) => {
+    menu.hidden = !open;
+    header.classList.toggle('menu-open', open);
+    menuToggle.setAttribute('aria-expanded', String(open));
+    menuToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    document.documentElement.style.overflow = open ? 'hidden' : '';
+    window.dispatchEvent(new CustomEvent(open ? 'scroll-lock' : 'scroll-unlock'));
+  };
+  menuToggle.addEventListener('click', () => setMenu(menu.hidden !== false));
+  menu.querySelectorAll('[data-menu-link]').forEach((link) => link.addEventListener('click', () => setMenu(false)));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !menu.hidden) setMenu(false);
+  });
+
+  const links = new Map<string, HTMLElement>();
+  document.querySelectorAll<HTMLElement>('[data-nav-link]').forEach((a) => links.set(a.dataset.navLink!, a));
+  const sections = [...links.keys()].map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+  if (sections.length) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          links.forEach((a) => a.classList.remove('is-active'));
+          links.get(entry.target.id)?.classList.add('is-active');
+        });
+      },
+      { rootMargin: '-45% 0px -50% 0px' },
+    );
+    sections.forEach((s) => observer.observe(s));
+  }
+</script>
