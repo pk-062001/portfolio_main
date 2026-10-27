@@ -215,7 +215,11 @@ const groups = [...new Set(commands.map((c) => c.group))];
     window.dispatchEvent(new CustomEvent('scroll-lock'));
     input.focus();
   };
-  const close = () => dialog.open && dialog.close();
+  const close = () => {
+    if (!dialog.open) return;
+    dialog.close();
+    window.dispatchEvent(new CustomEvent('scroll-unlock'));
+  };
   dialog.addEventListener('close', () => window.dispatchEvent(new CustomEvent('scroll-unlock')));
 
   const run = (item: HTMLButtonElement) => {
@@ -223,7 +227,13 @@ const groups = [...new Set(commands.map((c) => c.group))];
     close();
     if (action === 'link') {
       const url = new URL(value, location.href);
-      if (url.pathname !== location.pathname || !url.hash || !scrollToHash(url.hash)) location.href = value;
+      if (url.pathname !== location.pathname || !url.hash) {
+        location.href = value;
+        return;
+      }
+      requestAnimationFrame(() => {
+        scrollToHash(url.hash);
+      });
     } else if (action === 'external') window.open(value, '_blank', 'noopener');
     else if (action === 'copy') navigator.clipboard?.writeText(value);
     else if (action === 'download') {

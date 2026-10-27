@@ -11,7 +11,7 @@ export const site = {
     'Prathamesh Kokkula is a Senior Full-Stack Engineer in Mumbai building production B2B platforms — multi-gateway payments, JWT/RBAC security, real-time dashboards and cloud infrastructure with React, Node.js, MongoDB and AWS.',
   location: 'Mumbai, India',
   timezone: 'Asia/Kolkata',
-  availability: 'Available for senior full-stack roles',
+  availability: '',
   currently: { label: 'BXI — Barter Exchange of India', role: 'Senior Software Developer' },
   email: 'kprathamesh2001@gmail.com',
   phone: '+91 87790 99074',

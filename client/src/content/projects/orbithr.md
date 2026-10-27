@@ -5,7 +5,8 @@ summary: A full HR operating system for companies of any size — employees chec
 year: '2026'
 role: Solo — architecture, backend, frontend
 team: 1 engineer
-status: In development
+status: Live
+live: https://orbit-hr-frontend.vercel.app/login
 stack: [React, Node.js, Express, MongoDB, Socket.io, JWT, PDFKit, Leaflet, Recharts, Tailwind CSS]
 highlights:
   - Tenant-isolated data — every query scoped by organisation

@@ -13,12 +13,6 @@ import { site } from '@/data/site';
 
   <div class="container hero-grid">
     <div class="hero-copy">
-      <a href="/#contact" class="status" data-reveal>
-        <span class="pulse-dot"></span>
-        {site.availability}
-        <Icon name="arrow-right" size={14} />
-      </a>
-
       <h1>
         <span class="kicker mono" data-reveal style="--d:80">{site.name} — {site.role}</span>
         <Split class="headline" style="--d:120">
@@ -65,7 +59,7 @@ import { site } from '@/data/site';
       />
       <canvas aria-hidden="true"></canvas>
       <figcaption class="caption mono">
-        <span>fig.01 — {site.shortName}, rendered live</span>
+        <span>{site.name}</span>
         <span class="count"><span data-particle-count>WebGL</span> particles</span>
       </figcaption>
     </figure>

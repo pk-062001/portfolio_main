@@ -80,7 +80,7 @@ Read this before editing the portfolio. It records how the site is built, the co
 
 ## Pending / to verify with the owner
 
-- Add `live` / `repo` links and real screenshots (`cover`) for OrbitHR, Real-Time Chat and StayScape when available.
-- Confirm the Real-Time Chat and StayScape write-ups (years 2024/2023, feature lists) and OrbitHR's year (2026) / status.
+- OrbitHR is live at `https://orbit-hr-frontend.vercel.app/login`. Add `live` / `repo` links and real screenshots (`cover`) for Real-Time Chat and StayScape when available.
+- Confirm the Real-Time Chat and StayScape write-ups (years 2024/2023, feature lists) and OrbitHR's year (2026).
 - Activate FormSubmit or add EmailJS keys in Vercel.
 - Optional: custom domain.

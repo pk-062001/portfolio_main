@@ -109,7 +109,11 @@ if (finePointer && !reducedMotion) {
 
 /* ---------- Smooth scroll (desktop only, loaded lazily) ---------- */
 
-type LenisLike = { scrollTo: (target: HTMLElement | number, opts?: { offset?: number }) => void };
+type LenisLike = {
+  scrollTo: (target: HTMLElement | number, opts?: { offset?: number; force?: boolean }) => void;
+  start: () => void;
+  stop: () => void;
+};
 let lenis: LenisLike | undefined;
 
 if (finePointer && !reducedMotion) {
@@ -124,8 +128,12 @@ if (finePointer && !reducedMotion) {
 export function scrollToHash(hash: string) {
   const target = hash === '#top' ? document.body : document.getElementById(hash.slice(1));
   if (!target) return false;
-  if (lenis) lenis.scrollTo(hash === '#top' ? 0 : target, { offset: -80 });
-  else target.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
+  if (lenis) {
+    lenis.start();
+    lenis.scrollTo(hash === '#top' ? 0 : target, { offset: -80, force: true });
+  } else {
+    target.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
+  }
   history.replaceState(null, '', hash === '#top' ? location.pathname : hash);
   return true;
 }
